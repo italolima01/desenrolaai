@@ -59,7 +59,7 @@ export default function CasesSection() {
           slidesPerView={1}
           centeredSlides={true}
           navigation
-          className="mySwiper"
+          className="mySwiper cases-swiper"
           // Breakpoints for desktop
           breakpoints={{
             768: {
