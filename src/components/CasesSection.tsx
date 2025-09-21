@@ -12,15 +12,15 @@ import 'swiper/css/effect-coverflow';
 const cases = [
   {
     title: 'Automação de Processos para Fintech',
-    image: '/images/logo desenrolaai.jpg',
+    image: '/images/LogoCompletaAI.svg',
   },
   {
     title: 'Plataforma de Análise de Dados para Varejo',
-    image: '/images/logo desenrolaai.jpg',
+    image: '/images/LogoCompletaAI.svg',
   },
   {
     title: 'Agente de IA para Atendimento ao Cliente',
-    image: '/images/logo desenrolaai.jpg',
+    image: '/images/LogoCompletaAI.svg',
   },
 ];
 
