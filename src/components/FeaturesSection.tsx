@@ -39,7 +39,7 @@ export default function FeaturesSection() {
           objectFit="cover"
           quality={80}
         />
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-black/80" />
       </div>
       {/* Gradiente radial sutil para textura */}
       

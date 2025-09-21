@@ -39,7 +39,7 @@ const cardVariants: Variants = {
 
 export default function CasesSection() {
   return (
-    <section id="cases" className="bg-gray-50 py-20 px-4 rounded-3xl">
+    <section id="cases" className="bg-gray-50 py-20 px-4">
       <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
