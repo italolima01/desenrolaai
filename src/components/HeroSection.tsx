@@ -21,7 +21,7 @@ export default function HeroSection() {
           className="contrast-125"
         />
         <div className="absolute inset-0 bg-black/80" />
-        <div className="absolute inset-0 bg-[radial-gradient(rgba(59,130,246,0.35)_1px,transparent_1px)] [background-size:16px_16px] opacity-30" />
+        
       </div>
 
       {/* Bottom gradient to transition from blue to white */}

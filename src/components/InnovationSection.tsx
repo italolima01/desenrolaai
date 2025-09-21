@@ -18,7 +18,7 @@ export default function InnovationSection() {
         <div className="absolute inset-0 bg-black/80" />
       </div>
       {/* Gradiente radial sutil para textura */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(59,130,246,0.12)_1px,transparent_1px)] [background-size:16px_16px] opacity-30" />
+      
 
       {/* Conteúdo principal */}
       <div className="relative py-20 px-4">
@@ -69,12 +69,9 @@ export default function InnovationSection() {
           </div>
         </div>
       </div>
-            {/* Swoosh divider to next section */}
-      <div className="absolute bottom-0 left-0 w-full h-20 overflow-hidden">
-        <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-full">
-          <path d="M0,100 C480,0 960,0 1440,100 L1440,100 L0,100 Z" fill="#FFFFFF"></path>
-        </svg>
-      </div>
+            
+    {/* Bottom gradient to transition from blue to white */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 md:h-28 bg-gradient-to-b from-transparent to-white/100" />
     </section>
   );
 }

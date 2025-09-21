@@ -69,10 +69,10 @@ export default function CasesSection() {
               centeredSlides: true,
               coverflowEffect: {
                 rotate: 0,
-                stretch: 20,
-                depth: 100,
-                modifier: 1.5,
-                slideShadows: false,
+                stretch: 30,
+                depth: 200,
+                modifier: 2.5,
+                slideShadows: true,
               },
               slideToClickedSlide: true,
             }

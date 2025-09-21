@@ -42,7 +42,7 @@ export default function FeaturesSection() {
         <div className="absolute inset-0 bg-black/80" />
       </div>
       {/* Gradiente radial sutil para textura */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(59,130,246,0.12)_1px,transparent_1px)] [background-size:16px_16px] opacity-30" />
+      
 
       <div className="container mx-auto relative">
         <div className="text-center mb-12">
