@@ -20,7 +20,7 @@ export default function HeroSection() {
           priority
           className="contrast-125"
         />
-        <div className="absolute inset-0 bg-black/80" />
+        <div className="absolute inset-0 bg-black/50" />
         
       </div>
 

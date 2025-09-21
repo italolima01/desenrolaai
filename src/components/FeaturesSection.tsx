@@ -39,7 +39,7 @@ export default function FeaturesSection() {
           objectFit="cover"
           quality={80}
         />
-        <div className="absolute inset-0 bg-black/80" />
+        <div className="absolute inset-0 bg-black/50" />
       </div>
       {/* Gradiente radial sutil para textura */}
       
@@ -69,6 +69,8 @@ export default function FeaturesSection() {
           ))}
         </div>
       </div>
+    {/* Bottom gradient to transition from blue to white */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 md:h-28 bg-gradient-to-b from-transparent to-white/100" />
     </section>
   </>);
 }
