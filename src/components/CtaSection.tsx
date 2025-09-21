@@ -1,9 +1,31 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Link } from 'react-scroll';
+import { useState } from 'react';
 
 export default function CtaSection() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Aqui você pode adicionar a lógica de envio do formulário (ex: para uma API)
+    console.log('Form data submitted:', formData);
+    alert('Obrigado pelo seu contato! Responderemos em breve.');
+    setFormData({ name: '', email: '', message: '' });
+  };
+
   return (
     <section id="cta" className="relative bg-white py-20 text-center pb-48">
       <div className="container mx-auto px-4">
@@ -21,27 +43,66 @@ export default function CtaSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           viewport={{ once: true, amount: 0.3 }}
-          className="text-xl mb-8 max-w-2xl mx-auto text-gray-600"
+          className="text-xl mb-8 max-w-3xl mx-auto text-gray-600"
         >
-          Entre em contato conosco e descubra como nossas soluções personalizadas podem impulsionar sua empresa.
+          Preencha o formulário abaixo e descubra como nossas soluções personalizadas podem impulsionar sua empresa.
         </motion.p>
+        
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ type: "spring", stiffness: 100, damping: 10, delay: 0.4 }}
+          initial={{ opacity: 0, y: 50, scale: 0.9 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
           viewport={{ once: true, amount: 0.3 }}
+          className="max-w-2xl mx-auto"
         >
-          <Link
-            to="contact" // Assuming a contact section exists or will be created
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={500}
-            className="btn-primary inline-block cursor-pointer"
-          >
-            Fale Conosco
-          </Link>
+          <form onSubmit={handleSubmit} className="space-y-6 text-left">
+            <div>
+              <label htmlFor="name" className="sr-only">Nome</label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Seu nome"
+                required
+                className="w-full px-4 py-3 rounded-lg bg-gray-100 border-gray-300 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+            <div>
+              <label htmlFor="email" className="sr-only">Email</label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Seu email"
+                required
+                className="w-full px-4 py-3 rounded-lg bg-gray-100 border-gray-300 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+            <div>
+              <label htmlFor="message" className="sr-only">Mensagem</label>
+              <textarea
+                name="message"
+                id="message"
+                rows={4}
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Sua mensagem"
+                required
+                className="w-full px-4 py-3 rounded-lg bg-gray-100 border-gray-300 focus:ring-blue-500 focus:border-blue-500 transition"
+              ></textarea>
+            </div>
+            <div className="text-center">
+              <button type="submit" className="btn-primary">
+                Enviar Mensagem
+              </button>
+            </div>
+          </form>
         </motion.div>
+
       </div>
       {/* Wave divider to next section */}
       <div className="absolute inset-x-0 bottom-0 h-24 overflow-hidden">

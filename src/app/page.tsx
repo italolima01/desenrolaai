@@ -1,12 +1,15 @@
 'use client';
 
-import HeroSection from '@/components/HeroSection';
+import dynamic from 'next/dynamic';
+import CasesSection from '@/components/CasesSection';
+import CtaSection from '@/components/CtaSection';
+import FeatureSection from '@/components/FeaturesSection';
+import InnovationSection from '@/components/InnovationSection';
 import Navbar from '@/components/Navbar';
 import ServicesSection from '@/components/ServicesSection';
-import FeaturesSection from '@/components/FeaturesSection';
-import InnovationSection from '@/components/InnovationSection';
-import CtaSection from '@/components/CtaSection';
-import Footer from '@/components/Footer';
+
+const HeroSection = dynamic(() => import('@/components/HeroSection'), { ssr: false });
+const Footer = dynamic(() => import('@/components/Footer'), { ssr: false });
 
 export default function Home() {
   return (
@@ -14,7 +17,8 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <ServicesSection />
-      <FeaturesSection />
+      <FeatureSection />
+      <CasesSection />
       <InnovationSection />
       <CtaSection />
       <Footer />

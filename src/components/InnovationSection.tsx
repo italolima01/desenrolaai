@@ -1,10 +1,22 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export default function InnovationSection() {
   return (
-    <section id="about" className="relative bg-gradient-to-br from-black via-[#030712] to-black text-white pt-20 pb-20">
+    <section id="about" className="relative text-white pt-20 pb-20">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 w-full h-full">
+        <Image
+          src="/images/fundo desenrola site.jpeg"
+          alt="Fundo"
+          layout="fill"
+          objectFit="cover"
+          quality={80}
+        />
+        <div className="absolute inset-0 bg-black/80" />
+      </div>
       {/* Gradiente radial sutil para textura */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(59,130,246,0.12)_1px,transparent_1px)] [background-size:16px_16px] opacity-30" />
 
@@ -23,11 +35,12 @@ export default function InnovationSection() {
                 {/* Efeito de brilho em volta da imagem */}
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/70 to-sky-500/70 rounded-2xl blur-md opacity-70 group-hover:opacity-100 group-hover:blur-lg transition-all duration-500"></div>
                 
-                <img
+                <Image
                   src="/images/brain-ai.jpg"
                   alt="Inovação em IA"
-                  className="absolute inset-0 w-full h-full object-cover object-center rounded-2xl z-10"
-                  loading="lazy"
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-2xl z-10"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black to-transparent opacity-30 z-20" />
               </div>

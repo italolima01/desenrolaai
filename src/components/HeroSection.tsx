@@ -1,15 +1,26 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Link, animateScroll as scroll } from 'react-scroll';
+import { Link } from 'react-scroll';
+import Image from 'next/image';
 
 export default function HeroSection() {
   return (
     <div id="hero" className="relative h-screen flex items-center justify-center text-center overflow-x-hidden">
       {/* Background Image with Overlay */}
       <div 
-        className="absolute inset-0 w-full h-full bg-gradient-to-br from-black via-[#030712] to-black"
+        className="absolute inset-0 w-full h-full"
       >
+        <Image
+          src="/images/fundo desenrola site.jpeg"
+          alt="Fundo"
+          layout="fill"
+          objectFit="cover"
+          quality={80}
+          priority
+          className="contrast-125"
+        />
+        <div className="absolute inset-0 bg-black/80" />
         <div className="absolute inset-0 bg-[radial-gradient(rgba(59,130,246,0.35)_1px,transparent_1px)] [background-size:16px_16px] opacity-30" />
       </div>
 
