@@ -54,21 +54,13 @@ export default function CasesSection() {
 
         <Swiper
           modules={[Navigation, A11y, EffectCoverflow]}
-          effect="coverflow"
-          grabCursor={true}
-          centeredSlides={true}
-          slidesPerView={5}
-          coverflowEffect={{
-            rotate: 0,
-            stretch: 20,
-            depth: 100,
-            modifier: 1.5,
-            slideShadows: false,
-          }}
-          navigation
           loop={true}
-          slideToClickedSlide={true}
-          className="mySwiper"
+          direction={'vertical'}
+          slidesPerView={1}
+          spaceBetween={30}
+          navigation
+          className="mySwiper-vertical md:hidden"
+          style={{ height: '450px' }}
         >
           {[...cases, ...cases, ...cases, ...cases].map((caseItem, index) => (
             <SwiperSlide key={index} style={{ height: '400px' }}>
@@ -90,6 +82,46 @@ export default function CasesSection() {
             </SwiperSlide>
           ))}
         </Swiper>
+
+        <Swiper
+          modules={[Navigation, A11y, EffectCoverflow]}
+          effect="coverflow"
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={5}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 20,
+            depth: 100,
+            modifier: 1.5,
+            slideShadows: false,
+          }}
+          navigation
+          loop={true}
+          slideToClickedSlide={true}
+          className="mySwiper hidden md:block"
+        >
+          {[...cases, ...cases, ...cases, ...cases].map((caseItem, index) => (
+            <SwiperSlide key={index} style={{ height: '400px' }}>
+              <motion.div
+                className="bg-white rounded-lg shadow-lg overflow-hidden h-full"
+                custom={index}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.5 }}
+                variants={cardVariants}
+              >
+                <div className="relative h-56 w-full">
+                  <Image src={caseItem.image} alt={caseItem.title} layout="fill" objectFit="cover" className="w-full h-full" />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-gray-800">{caseItem.title}</h3>
+                </div>
+              </motion.div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
       </div>
     </section>
   );
