@@ -4,10 +4,7 @@ import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, A11y, EffectCoverflow } from 'swiper/modules';
-
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/effect-coverflow';
+import { useState, useEffect } from 'react';
 
 const cases = [
   {
@@ -38,6 +35,18 @@ const cardVariants: Variants = {
 };
 
 export default function CasesSection() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Assuming md breakpoint is 768px
+    };
+
+    handleResize(); // Set initial value
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <section id="cases" className="bg-gray-50 py-20 px-4 rounded-3xl">
       <div className="container mx-auto">
@@ -52,76 +61,77 @@ export default function CasesSection() {
           <p className="text-gray-600 mt-4 text-base sm:text-lg">Veja como ajudamos nossos clientes a inovar.</p>
         </motion.div>
 
-        <Swiper
-          modules={[Navigation, A11y, EffectCoverflow]}
-          loop={true}
-          direction={'vertical'}
-          slidesPerView={1}
-          spaceBetween={30}
-          navigation
-          className="mySwiper-vertical md:hidden"
-          style={{ height: '450px' }}
-        >
-          {[...cases, ...cases, ...cases, ...cases].map((caseItem, index) => (
-            <SwiperSlide key={index} style={{ height: '400px' }}>
-              <motion.div
-                className="bg-white rounded-lg shadow-lg overflow-hidden h-full"
-                custom={index}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.5 }}
-                variants={cardVariants}
-              >
-                <div className="relative h-56 w-full">
-                  <Image src={caseItem.image} alt={caseItem.title} layout="fill" objectFit="cover" className="w-full h-full" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-800">{caseItem.title}</h3>
-                </div>
-              </motion.div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-
-        <Swiper
-          modules={[Navigation, A11y, EffectCoverflow]}
-          effect="coverflow"
-          grabCursor={true}
-          centeredSlides={true}
-          slidesPerView={5}
-          coverflowEffect={{
-            rotate: 0,
-            stretch: 20,
-            depth: 100,
-            modifier: 1.5,
-            slideShadows: false,
-          }}
-          navigation
-          loop={true}
-          slideToClickedSlide={true}
-          className="mySwiper hidden md:block"
-        >
-          {[...cases, ...cases, ...cases, ...cases].map((caseItem, index) => (
-            <SwiperSlide key={index} style={{ height: '400px' }}>
-              <motion.div
-                className="bg-white rounded-lg shadow-lg overflow-hidden h-full"
-                custom={index}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.5 }}
-                variants={cardVariants}
-              >
-                <div className="relative h-56 w-full">
-                  <Image src={caseItem.image} alt={caseItem.title} layout="fill" objectFit="cover" className="w-full h-full" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-800">{caseItem.title}</h3>
-                </div>
-              </motion.div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-
+        {isMobile ? (
+          <Swiper
+            modules={[Navigation, A11y, EffectCoverflow]}
+            loop={true}
+            direction={'vertical'}
+            slidesPerView={1}
+            spaceBetween={30}
+            navigation
+            className="mySwiper-vertical"
+            style={{ height: '450px' }}
+          >
+            {[...cases, ...cases, ...cases, ...cases].map((caseItem, index) => (
+              <SwiperSlide key={index} style={{ height: '400px' }}>
+                <motion.div
+                  className="bg-white rounded-lg shadow-lg overflow-hidden h-full"
+                  custom={index}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.5 }}
+                  variants={cardVariants}
+                >
+                  <div className="relative h-56 w-full">
+                    <Image src={caseItem.image} alt={caseItem.title} layout="fill" objectFit="cover" className="w-full h-full" />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold text-gray-800">{caseItem.title}</h3>
+                  </div>
+                </motion.div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          <Swiper
+            modules={[Navigation, A11y, EffectCoverflow]}
+            effect="coverflow"
+            grabCursor={true}
+            centeredSlides={true}
+            slidesPerView={5}
+            coverflowEffect={{
+              rotate: 0,
+              stretch: 20,
+              depth: 100,
+              modifier: 1.5,
+              slideShadows: false,
+            }}
+            navigation
+            loop={true}
+            slideToClickedSlide={true}
+            className="mySwiper"
+          >
+            {[...cases, ...cases, ...cases, ...cases].map((caseItem, index) => (
+              <SwiperSlide key={index} style={{ height: '400px' }}>
+                <motion.div
+                  className="bg-white rounded-lg shadow-lg overflow-hidden h-full"
+                  custom={index}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.5 }}
+                  variants={cardVariants}
+                >
+                  <div className="relative h-56 w-full">
+                    <Image src={caseItem.image} alt={caseItem.title} layout="fill" objectFit="cover" className="w-full h-full" />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold text-gray-800">{caseItem.title}</h3>
+                  </div>
+                </motion.div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
       </div>
     </section>
   );
