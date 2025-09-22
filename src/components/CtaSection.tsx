@@ -20,7 +20,7 @@ export default function CtaSection() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Aqui você pode adicionar a lógica de envio do formulário (ex: para uma API)
+    // Here you can add the form submission logic (e.g., to an API)
     console.log('Form data submitted:', formData);
     alert('Obrigado pelo seu contato! Responderemos em breve.');
     setFormData({ name: '', email: '', message: '' });

@@ -1,15 +1,24 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-scroll';
 import Image from 'next/image';
+import { useRef } from 'react';
 
 export default function HeroSection() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+
   return (
-    <div id="hero" className="relative h-screen flex items-center justify-center text-center overflow-x-hidden">
+    <div id="hero" ref={ref} className="relative h-screen flex items-center justify-center text-center overflow-x-hidden">
       {/* Background Image with Overlay */}
-      <div 
+      <motion.div
         className="absolute inset-0 w-full h-full"
+        style={{ y }}
       >
         <Image
           src="/images/fundo desenrola site.jpeg"
@@ -18,11 +27,11 @@ export default function HeroSection() {
           objectFit="cover"
           quality={80}
           priority
-          className="contrast-125"
+          className="contrast-125 blur-[1px]"
         />
         <div className="absolute inset-0 bg-black/80" />
         
-      </div>
+      </motion.div>
 
       {/* Bottom gradient to transition from blue to white */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 md:h-28 bg-gradient-to-b from-transparent to-white/100" />

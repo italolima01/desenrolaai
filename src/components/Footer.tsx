@@ -17,6 +17,8 @@ export default function Footer() {
           layout="fill"
           objectFit="cover"
           quality={80}
+          priority
+          className="contrast-125 blur-[1px]"
         />
         <div className="absolute inset-0 bg-black/90" />
       </div>

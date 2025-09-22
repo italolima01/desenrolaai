@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 export default function InnovationSection() {
   return (
-    <section id="about" className="relative text-white pt-20 pb-20">
+        <section id="about" className="relative text-white pt-20">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 w-full h-full">
         <Image
@@ -14,6 +14,8 @@ export default function InnovationSection() {
           layout="fill"
           objectFit="cover"
           quality={80}
+          priority
+          className="contrast-125 blur-[1px]"
         />
         <div className="absolute inset-0 bg-black/80" />
       </div>
@@ -21,7 +23,7 @@ export default function InnovationSection() {
       
 
       {/* Conteúdo principal */}
-      <div className="relative py-20 px-4">
+      <div className="relative pt-10 pb-48 px-4">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Imagem */}
@@ -71,7 +73,14 @@ export default function InnovationSection() {
       </div>
             
     {/* Bottom gradient to transition from blue to white */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 md:h-28 bg-gradient-to-b from-transparent to-white/100" />
+      <div className="absolute inset-x-0 bottom-0 h-40 overflow-hidden">
+        <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-full">
+            <path
+                d="M0,60 C240,0 360,120 600,60 C840,0 960,120 1200,60 C1320,30 1440,90 1440,60 L1440,120 L0,120 Z"
+                fill="#ffffff"
+            />
+        </svg>
+    </div>
     </section>
   );
 }
