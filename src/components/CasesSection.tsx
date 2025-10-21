@@ -98,8 +98,8 @@ export default function CasesSection() {
 
 function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Variants }) {
   const [visible, setVisible] = useState(1);
+  const [index, setIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const innerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     function calc() {
@@ -112,92 +112,57 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
     function onResize() {
       const v = calc();
       setVisible(v);
+      setIndex((i) => Math.min(i, Math.max(0, cases.length - v)));
     }
 
     onResize();
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
-  }, []);
+  }, [cases.length]);
 
-  function scrollByDelta(delta: number) {
-    const el = containerRef.current;
-    if (!el) return;
-    el.scrollBy({ left: delta, behavior: 'smooth' });
-  }
-
-  function getCardDelta() {
-    const inner = innerRef.current;
-    if (!inner) return Math.round((containerRef.current?.clientWidth || 0) / visible);
-    const first = inner.children[0] as HTMLElement | undefined;
-    if (!first) return Math.round((containerRef.current?.clientWidth || 0) / visible);
-    const cardWidth = first.getBoundingClientRect().width;
-    const gap = parseFloat(getComputedStyle(inner).gap || '0') || 0;
-    return Math.round(cardWidth + gap);
-  }
-
-  function next() {
-    const el = containerRef.current;
-    const inner = innerRef.current;
-    if (!el || !inner) return;
-    const children = Array.from(inner.children) as HTMLElement[];
-    if (!children.length) return;
-
-    // find first child whose left offset is >= current scrollLeft + 1
-    const current = children.findIndex((c) => c.offsetLeft >= el.scrollLeft + 1);
-    let targetIndex = 0;
-    if (current === -1) {
-      // all children are before scrollLeft, go to first
-      targetIndex = 0;
-    } else {
-      targetIndex = current + 1;
-      if (targetIndex >= children.length) targetIndex = 0; // wrap
-    }
-
-    const target = children[targetIndex];
-    el.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
-  }
+  const maxIndex = Math.max(0, cases.length - visible);
 
   function prev() {
-    const el = containerRef.current;
-    const inner = innerRef.current;
-    if (!el || !inner) return;
-    const children = Array.from(inner.children) as HTMLElement[];
-    if (!children.length) return;
-
-    // find first child whose left offset is >= current scrollLeft + 1
-    const current = children.findIndex((c) => c.offsetLeft >= el.scrollLeft + 1);
-    let targetIndex = children.length - 1;
-    if (current === -1) {
-      // if not found, we're likely at the end — move to last
-      targetIndex = children.length - 1;
-    } else {
-      targetIndex = current - 1;
-      if (targetIndex < 0) targetIndex = children.length - 1; // wrap
-    }
-
-    const target = children[targetIndex];
-    el.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
+    setIndex((i) => {
+      const pages = Math.max(1, maxIndex + 1);
+      return (i - 1 + pages) % pages;
+    });
+  }
+  function next() {
+    setIndex((i) => {
+      const pages = Math.max(1, maxIndex + 1);
+      return (i + 1) % pages;
+    });
   }
 
   return (
     <div className="relative px-6 lg:px-12">
-      <button aria-label="Anterior" onClick={prev} className={`absolute -left-6 top-1/2 -translate-y-1/2 z-30 rounded-full bg-[#0b1320]/90 p-3 text-white shadow-md hover:scale-105 transition-transform`}>
+      <button
+        aria-label="Anterior"
+        onClick={prev}
+        className={`absolute -left-6 top-1/2 -translate-y-1/2 z-30 rounded-full bg-[#0b1320]/90 p-3 text-white shadow-md hover:scale-105 transition-transform`}
+      >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
       </button>
 
-      <div ref={containerRef} className="overflow-x-auto no-scrollbar">
-        <div ref={innerRef} className="flex items-stretch" style={{ gap: '1rem' }}>
+      <div ref={containerRef} className="overflow-hidden">
+        <motion.div
+          className="flex items-stretch"
+          animate={{ x: `-${(index * 100) / visible}%` }}
+          transition={{ type: 'spring', stiffness: 120, damping: 20 }}
+          style={{ width: `${(cases.length * 100) / visible}%` }}
+        >
           {cases.map((caseItem: CaseItem, idx: number) => (
-            <div key={idx} style={{ minWidth: `calc(${100 / visible}% - 1rem)` }} className="px-2 py-2">
+            <div key={idx} style={{ width: `${100 / visible}%` }} className="px-4 py-2">
               <motion.article
                 custom={idx}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.4 }}
                 variants={cardVariants}
-                className="bg-[#0b1320] border border-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-200 h-full flex flex-col group"
+                className="bg-[#0b1320] border border-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 h-full flex flex-col group"
               >
                 <div className="relative h-72 w-full overflow-hidden">
                   <Image src={caseItem.image} alt={caseItem.title} fill style={{ objectFit: 'cover' }} className="object-cover transition-transform duration-300 ease-out group-hover:scale-110" />
@@ -219,10 +184,14 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
               </motion.article>
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
-      <button aria-label="Próximo" onClick={next} className={`absolute -right-6 top-1/2 -translate-y-1/2 z-30 rounded-full bg-[#0b1320]/90 p-3 text-white shadow-md hover:scale-105 transition-transform`}>
+      <button
+        aria-label="Próximo"
+        onClick={next}
+        className={`absolute -right-6 top-1/2 -translate-y-1/2 z-30 rounded-full bg-[#0b1320]/90 p-3 text-white shadow-md hover:scale-105 transition-transform`}
+      >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
         </svg>
