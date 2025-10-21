@@ -123,16 +123,40 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
   const maxIndex = Math.max(0, cases.length - visible);
 
   function prev() {
+    if (visible === 1) {
+      const pages = cases.length;
+      const nextIdx = (index - 1 + pages) % pages;
+      scrollToIndex(nextIdx);
+      return;
+    }
+
     setIndex((i) => {
       const pages = Math.max(1, maxIndex + 1);
       return (i - 1 + pages) % pages;
     });
   }
   function next() {
+    if (visible === 1) {
+      const pages = cases.length;
+      const nextIdx = (index + 1) % pages;
+      scrollToIndex(nextIdx);
+      return;
+    }
+
     setIndex((i) => {
       const pages = Math.max(1, maxIndex + 1);
       return (i + 1) % pages;
     });
+  }
+
+  function scrollToIndex(i: number) {
+    if (!containerRef.current) {
+      setIndex(i);
+      return;
+    }
+    const w = containerRef.current.clientWidth;
+    containerRef.current.scrollTo({ left: i * w, behavior: 'smooth' });
+    setIndex(i);
   }
 
   return (
@@ -147,45 +171,86 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
         </svg>
       </button>
 
-      <div ref={containerRef} className="overflow-hidden">
-        <motion.div
-          className="flex items-stretch"
-          animate={{ x: `-${(index * 100) / visible}%` }}
-          transition={{ type: 'spring', stiffness: 120, damping: 20 }}
-          style={{ width: `${(cases.length * 100) / visible}%` }}
-        >
-          {cases.map((caseItem: CaseItem, idx: number) => (
-            <div key={idx} style={{ width: `${100 / visible}%` }} className="px-4 py-2">
-              <motion.article
-                custom={idx}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.4 }}
-                variants={cardVariants}
-                className="bg-[#0b1320] border border-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 h-full flex flex-col group"
-              >
-                <div className="relative h-72 w-full overflow-hidden">
-                  <Image src={caseItem.image} alt={caseItem.title} fill style={{ objectFit: 'cover' }} className="object-cover transition-transform duration-300 ease-out group-hover:scale-110" />
-                </div>
+        <div ref={containerRef} className="overflow-hidden">
+          {visible === 1 ? (
+            // Mobile: native horizontal scroll with snap per card
+            <div
+              ref={containerRef as React.RefObject<HTMLDivElement>}
+              className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth -mx-4 px-4"
+              onScroll={() => {
+                if (!containerRef.current) return;
+                const scrollLeft = containerRef.current.scrollLeft;
+                const w = containerRef.current.clientWidth;
+                const newIndex = Math.round(scrollLeft / w) || 0;
+                setIndex(newIndex);
+              }}
+            >
+              {cases.map((caseItem: CaseItem, idx: number) => (
+                <div key={idx} className="snap-center flex-shrink-0 w-full px-4">
+                  <article
+                    className="bg-[#0b1320] border border-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 h-full flex flex-col group"
+                  >
+                    <div className="relative h-72 w-full overflow-hidden">
+                      <Image src={caseItem.image} alt={caseItem.title} fill style={{ objectFit: 'cover' }} className="object-cover transition-transform duration-300 ease-out group-hover:scale-110" />
+                    </div>
 
-                <div className="p-8 bg-gradient-to-t from-[#07121a] to-transparent flex-1 flex flex-col">
-                  <span className="text-xs text-sky-300 font-medium mb-2 block">{caseItem.category}</span>
-                  <h3 className="text-white text-lg sm:text-xl font-semibold mb-3">{caseItem.title}</h3>
-                  <p className="text-slate-300 text-sm mb-6 line-clamp-4 flex-1">{caseItem.description}</p>
+                    <div className="p-8 bg-gradient-to-t from-[#07121a] to-transparent flex-1 flex flex-col">
+                      <span className="text-xs text-sky-300 font-medium mb-2 block">{caseItem.category}</span>
+                      <h3 className="text-white text-lg sm:text-xl font-semibold mb-3">{caseItem.title}</h3>
+                      <p className="text-slate-300 text-sm mb-6 line-clamp-4 flex-1">{caseItem.description}</p>
 
-                  <div className="flex flex-wrap gap-2 mt-auto">
-                    {caseItem.tags.map((tag: string) => (
-                      <span key={tag} className="text-xs text-sky-200 bg-sky-900/10 border border-sky-800/30 px-3 py-1 rounded-full">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                      <div className="flex flex-wrap gap-2 mt-auto">
+                        {caseItem.tags.map((tag: string) => (
+                          <span key={tag} className="text-xs text-sky-200 bg-sky-900/10 border border-sky-800/30 px-3 py-1 rounded-full">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </article>
                 </div>
-              </motion.article>
+              ))}
             </div>
-          ))}
-        </motion.div>
-      </div>
+          ) : (
+            <motion.div
+              className="flex items-stretch"
+              animate={{ x: `-${(index * 100) / visible}%` }}
+              transition={{ type: 'spring', stiffness: 120, damping: 20 }}
+              style={{ width: `${(cases.length * 100) / visible}%` }}
+            >
+              {cases.map((caseItem: CaseItem, idx: number) => (
+                <div key={idx} style={{ width: `${100 / visible}%` }} className="px-4 py-2">
+                  <motion.article
+                    custom={idx}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.4 }}
+                    variants={cardVariants}
+                    className="bg-[#0b1320] border border-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-200 h-full flex flex-col"
+                  >
+                    <div className="relative h-72 w-full">
+                      <Image src={caseItem.image} alt={caseItem.title} fill style={{ objectFit: 'cover' }} className="object-cover" />
+                    </div>
+
+                    <div className="p-8 bg-gradient-to-t from-[#07121a] to-transparent flex-1 flex flex-col">
+                      <span className="text-xs text-sky-300 font-medium mb-2 block">{caseItem.category}</span>
+                      <h3 className="text-white text-lg sm:text-xl font-semibold mb-3">{caseItem.title}</h3>
+                      <p className="text-slate-300 text-sm mb-6 line-clamp-4 flex-1">{caseItem.description}</p>
+
+                      <div className="flex flex-wrap gap-2 mt-auto">
+                        {caseItem.tags.map((tag: string) => (
+                          <span key={tag} className="text-xs text-sky-200 bg-sky-900/10 border border-sky-800/30 px-3 py-1 rounded-full">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.article>
+                </div>
+              ))}
+            </motion.div>
+          )}
+        </div>
 
       <button
         aria-label="Próximo"
