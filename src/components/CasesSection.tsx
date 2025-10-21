@@ -259,6 +259,26 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
           )}
         </div>
 
+        {/* Dots */}
+        <div className="flex justify-center gap-2 mt-6">
+          {visible === 1
+            ? cases.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => scrollToIndex(i)}
+                  className={`h-2 w-8 rounded-full transition-colors ${i === index ? 'bg-sky-400' : 'bg-slate-700'}`}
+                  aria-label={`Ir para card ${i + 1}`}
+                />
+              ))
+            : Array.from({ length: Math.max(1, maxIndex + 1) }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setIndex(i)}
+                  className={`h-2 w-8 rounded-full transition-colors ${i === index ? 'bg-sky-400' : 'bg-slate-700'}`}
+                  aria-label={`Ir para página ${i + 1}`}
+                />
+              ))}
+        </div>
       <button
         aria-label="Próximo"
         onClick={next}
