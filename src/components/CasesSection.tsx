@@ -167,11 +167,11 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
   }
 
   return (
-    <div className="relative px-6 lg:px-12">
+    <div className="relative px-0 lg:px-12">
       <button
         aria-label="Anterior"
         onClick={prev}
-        className={`absolute -left-6 top-1/2 -translate-y-1/2 z-30 rounded-full bg-[#0b1320]/90 p-3 text-white shadow-md hover:scale-105 transition-transform`}
+        className={`absolute left-3 lg:-left-6 top-1/2 -translate-y-1/2 z-30 rounded-full bg-[#0b1320]/90 p-3 text-white shadow-md hover:scale-105 transition-transform`}
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -183,17 +183,22 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
             // Mobile: native horizontal scroll with snap per card
             <div
               ref={containerRef as React.RefObject<HTMLDivElement>}
-              className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth px-4 justify-center items-center gap-4"
+              className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth -mx-6 md:mx-0"
+              style={{
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+              }}
               onScroll={() => {
                 if (!containerRef.current) return;
                 const scrollLeft = containerRef.current.scrollLeft;
-                const w = containerRef.current.clientWidth;
-                const newIndex = Math.round(scrollLeft / w) || 0;
+                const itemWidth = containerRef.current.querySelector('[data-card]')?.clientWidth || 0;
+                const newIndex = Math.round(scrollLeft / itemWidth) || 0;
                 setIndex(newIndex);
               }}
             >
+              <div className="flex-none w-[calc((100vw-360px)/2)]" aria-hidden="true" />
               {cases.map((caseItem: CaseItem, idx: number) => (
-              <div key={idx} className="snap-center flex-shrink-0 w-[min(92vw,360px)] mx-auto">
+              <div key={idx} data-card className="snap-center flex-none w-[360px] px-3">
                   <article
                     className="bg-[#0b1320] border border-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 h-full flex flex-col group"
                   >
@@ -282,7 +287,7 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
       <button
         aria-label="Próximo"
         onClick={next}
-        className={`absolute -right-6 top-1/2 -translate-y-1/2 z-30 rounded-full bg-[#0b1320]/90 p-3 text-white shadow-md hover:scale-105 transition-transform`}
+        className={`absolute right-3 lg:-right-6 top-1/2 -translate-y-1/2 z-30 rounded-full bg-[#0b1320]/90 p-3 text-white shadow-md hover:scale-105 transition-transform`}
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
