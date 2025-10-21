@@ -99,25 +99,42 @@ export default function CasesSection() {
 function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Variants }) {
   const [visible, setVisible] = useState(1);
   const [index, setIndex] = useState(0);
+  const [cardWidth, setCardWidth] = useState(320);
+  const GAP = 12; // px gap between cards in mobile
   const containerRef = useRef<HTMLDivElement | null>(null);
-
   useEffect(() => {
-    function calc() {
+    function calcVisible() {
       const w = window.innerWidth;
       if (w >= 1024) return 3;
       if (w >= 640) return 2;
       return 1;
     }
 
-    function onResize() {
-      const v = calc();
+    function updateSizes() {
+      const vw = window.innerWidth;
+      const v = calcVisible();
+
+      // card width: prefer 320px on larger phones, but ensure it never exceeds viewport minus some margin
+      const preferred = 320;
+      const minCard = 280;
+      const computedCard = Math.min(preferred, Math.max(minCard, Math.floor(vw - 48)));
+      setCardWidth(computedCard);
+
+      // set container padding so the single card centers exactly in viewport
+      const pad = Math.max(0, Math.floor((vw - computedCard) / 2));
+      if (containerRef.current) {
+        containerRef.current.style.paddingLeft = `${pad}px`;
+        containerRef.current.style.paddingRight = `${pad}px`;
+        containerRef.current.style.gap = `${GAP}px`;
+      }
+
       setVisible(v);
       setIndex((i) => Math.min(i, Math.max(0, cases.length - v)));
     }
 
-    onResize();
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    updateSizes();
+    window.addEventListener('resize', updateSizes);
+    return () => window.removeEventListener('resize', updateSizes);
   }, [cases.length]);
 
   const maxIndex = Math.max(0, cases.length - visible);
@@ -183,22 +200,22 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
             // Mobile: native horizontal scroll with snap per card
             <div
               ref={containerRef as React.RefObject<HTMLDivElement>}
-              className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth -mx-6 md:mx-0 scrollbar-hide"
+              className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth"
               style={{
                 scrollbarWidth: 'none',
                 msOverflowStyle: 'none',
+                gap: `${GAP}px`,
               }}
               onScroll={() => {
                 if (!containerRef.current) return;
                 const scrollLeft = containerRef.current.scrollLeft;
-                const itemWidth = containerRef.current.querySelector('[data-card]')?.clientWidth || 0;
+                const itemWidth = cardWidth + GAP;
                 const newIndex = Math.round(scrollLeft / itemWidth) || 0;
                 setIndex(newIndex);
               }}
             >
-              <div className="flex-none w-[calc((100vw-320px)/2)]" aria-hidden="true" />
               {cases.map((caseItem: CaseItem, idx: number) => (
-              <div key={idx} data-card className="snap-center flex-none w-[320px] px-2">
+              <div key={idx} data-card className="snap-center flex-none px-1" style={{ width: `${cardWidth}px` }}>
                   <article
                     className="bg-[#0b1320] border border-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 h-full flex flex-col group"
                   >
