@@ -1,105 +1,201 @@
-'use client';
+"use client";
 
+import React, { useEffect, useState, useRef } from 'react';
 import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, A11y, EffectCoverflow } from 'swiper/modules';
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/effect-coverflow';
+type CaseItem = {
+  category: string;
+  title: string;
+  description: string;
+  image: string;
+  tags: string[];
+};
 
-const cases = [
+const cases: CaseItem[] = [
   {
-    title: 'Automação de Processos para Fintech',
-    image: '/images/LogoCompletaAI.svg',
+    category: 'Agente de IA',
+    title: 'Agente de Atendimento para E-commerce',
+    description:
+      'Agente de IA que opera 24/7 no SAC, resolvendo 80% das dúvidas de clientes sobre pedidos, frete e produtos de forma autônoma.',
+    image: 'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=800&h=600&fit=crop',
+    tags: ['IA Conversacional', 'E-commerce', 'Automação'],
   },
   {
-    title: 'Plataforma de Análise de Dados para Varejo',
-    image: '/images/LogoCompletaAI.svg',
+    category: 'Sistema Customizado',
+    title: 'Plataforma de Gestão Logística',
+    description:
+      'Sistema customizado para otimizar rotas de entrega, resultando em 15% de redução de custos e integração em tempo real com o estoque.',
+    image: 'https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=800&h=600&fit=crop',
+    tags: ['React', 'Node.js', 'Logística'],
   },
   {
-    title: 'Agente de IA para Atendimento ao Cliente',
-    image: '/images/LogoCompletaAI.svg',
+    category: 'Agente de IA',
+    title: 'IA para Qualificação de Leads',
+    description:
+      'Agente autônomo que analisa, segmenta e nutre leads de inbound marketing, entregando apenas os mais qualificados para a equipe de vendas.',
+    image: 'https://images.unsplash.com/photo-1556155092-490a1ba16284?w=800&h=600&fit=crop',
+    tags: ['CRM', 'Inteligência Artificial', 'Vendas'],
+  },
+  {
+    category: 'Sistema Customizado',
+    title: 'Sistema de Análise de Dados de Produção',
+    description:
+      'Dashboard que coleta e analisa dados do chão de fábrica em tempo real, identificando gargalos e oportunidades de melhoria.',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
+    tags: ['Analytics', 'Indústria 4.0', 'BI'],
+  },
+  {
+    category: 'Agente de IA',
+    title: 'Automação de Processos Financeiros',
+    description:
+      'Agente de IA que automatiza a conciliação de pagamentos, emissão de notas e relatórios, reduzindo trabalho manual em até 90%.',
+    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=600&fit=crop',
+    tags: ['RPA', 'Fintech', 'IA'],
+  },
+  {
+    category: 'Sistema Customizado',
+    title: 'Intranet Corporativa Inteligente',
+    description:
+      'Plataforma interna com um agente de IA integrado que auxilia funcionários a encontrar informações, agendar reuniões e acessar sistemas.',
+    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop',
+    tags: ['TypeScript', 'SharePoint', 'UX/UI'],
   },
 ];
 
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 16 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: {
-      delay: i * 0.2,
-      duration: 0.5,
-      ease: 'easeOut',
-    },
+    transition: { delay: i * 0.08, duration: 0.45, ease: 'easeOut' },
   }),
 };
 
 export default function CasesSection() {
   return (
-    <section id="cases" className="bg-gray-50 py-20 px-4">
+    <section id="cases" className="bg-[#0f1724] py-24 px-4">
       <div className="container mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          transition={{ duration: 0.45 }}
+          className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Cases de Sucesso</h2>
-          <p className="text-gray-600 mt-4 text-base sm:text-lg">Veja como ajudamos nossos clientes a inovar.</p>
+          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">Cases de Sucesso</h2>
+          <p className="text-slate-300 text-lg sm:text-xl">Soluções feitas sob medida que geram resultados reais.</p>
         </motion.div>
 
-        <Swiper
-          modules={[Navigation, A11y, EffectCoverflow]}
-          loop={true}
-          // Default (mobile-first) settings
-          slidesPerView={1}
-          centeredSlides={true}
-          navigation
-          className="mySwiper cases-swiper"
-          // Breakpoints for desktop
-          breakpoints={{
-            768: {
-              slidesPerView: 5,
-              effect: 'coverflow',
-              grabCursor: true,
-              centeredSlides: true,
-              coverflowEffect: {
-                rotate: 0,
-                stretch: 30,
-                depth: 200,
-                modifier: 2.5,
-                slideShadows: true,
-              },
-              slideToClickedSlide: true,
-            }
-          }}
-        >
-          {[...cases, ...cases, ...cases, ...cases].map((caseItem, index) => (
-            <SwiperSlide key={index} style={{ height: '400px' }}>
-              <motion.div
-                className="case-card bg-white rounded-lg shadow-lg overflow-hidden h-full"
-                custom={index}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.5 }}
-                variants={cardVariants}
-              >
-                <div className="relative h-48 w-full">
-                  <Image src={caseItem.image} alt={caseItem.title} layout="fill" objectFit="contain" className="w-full h-full" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-800">{caseItem.title}</h3>
-                </div>
-              </motion.div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-
+        {/* Carousel */}
+        <div className="relative">
+          <Carousel cases={cases} cardVariants={cardVariants} />
+        </div>
       </div>
     </section>
+  );
+}
+
+function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Variants }) {
+  const [visible, setVisible] = useState(1);
+  const [index, setIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    function calc() {
+      const w = window.innerWidth;
+      if (w >= 1024) return 3;
+      if (w >= 640) return 2;
+      return 1;
+    }
+
+    function onResize() {
+      const v = calc();
+      setVisible(v);
+      setIndex((i) => Math.min(i, Math.max(0, cases.length - v)));
+    }
+
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [cases.length]);
+
+  const maxIndex = Math.max(0, cases.length - visible);
+
+  function prev() {
+    setIndex((i) => {
+      const pages = Math.max(1, maxIndex + 1);
+      return (i - 1 + pages) % pages;
+    });
+  }
+  function next() {
+    setIndex((i) => {
+      const pages = Math.max(1, maxIndex + 1);
+      return (i + 1) % pages;
+    });
+  }
+
+  return (
+    <div className="relative px-6 lg:px-12">
+      <button
+        aria-label="Anterior"
+        onClick={prev}
+        className={`absolute -left-6 top-1/2 -translate-y-1/2 z-30 rounded-full bg-[#0b1320]/90 p-3 text-white shadow-md hover:scale-105 transition-transform`}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <div ref={containerRef} className="overflow-hidden">
+        <motion.div
+          className="flex items-stretch"
+          animate={{ x: `-${(index * 100) / visible}%` }}
+          transition={{ type: 'spring', stiffness: 120, damping: 20 }}
+          style={{ width: `${(cases.length * 100) / visible}%` }}
+        >
+          {cases.map((caseItem: CaseItem, idx: number) => (
+            <div key={idx} style={{ width: `${100 / visible}%` }} className="px-4 py-2">
+              <motion.article
+                custom={idx}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.4 }}
+                variants={cardVariants}
+                className="bg-[#0b1320] border border-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 h-full flex flex-col group"
+              >
+                <div className="relative h-72 w-full overflow-hidden">
+                  <Image src={caseItem.image} alt={caseItem.title} fill style={{ objectFit: 'cover' }} className="object-cover transition-transform duration-300 ease-out group-hover:scale-110" />
+                </div>
+
+                <div className="p-8 bg-gradient-to-t from-[#07121a] to-transparent flex-1 flex flex-col">
+                  <span className="text-xs text-sky-300 font-medium mb-2 block">{caseItem.category}</span>
+                  <h3 className="text-white text-lg sm:text-xl font-semibold mb-3">{caseItem.title}</h3>
+                  <p className="text-slate-300 text-sm mb-6 line-clamp-4 flex-1">{caseItem.description}</p>
+
+                  <div className="flex flex-wrap gap-2 mt-auto">
+                    {caseItem.tags.map((tag: string) => (
+                      <span key={tag} className="text-xs text-sky-200 bg-sky-900/10 border border-sky-800/30 px-3 py-1 rounded-full">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.article>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
+      <button
+        aria-label="Próximo"
+        onClick={next}
+        className={`absolute -right-6 top-1/2 -translate-y-1/2 z-30 rounded-full bg-[#0b1320]/90 p-3 text-white shadow-md hover:scale-105 transition-transform`}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
   );
 }
