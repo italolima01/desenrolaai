@@ -178,12 +178,12 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
         </svg>
       </button>
 
-        <div ref={containerRef} className="overflow-hidden">
+        <div className="overflow-hidden">
           {visible === 1 ? (
             // Mobile: native horizontal scroll with snap per card
             <div
               ref={containerRef as React.RefObject<HTMLDivElement>}
-              className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth -mx-4 px-4"
+              className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth px-4 justify-center items-center gap-4"
               onScroll={() => {
                 if (!containerRef.current) return;
                 const scrollLeft = containerRef.current.scrollLeft;
@@ -193,7 +193,7 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
               }}
             >
               {cases.map((caseItem: CaseItem, idx: number) => (
-                <div key={idx} className="snap-center flex-shrink-0 w-full px-4">
+              <div key={idx} className="snap-center flex-shrink-0 w-[min(92vw,360px)] mx-auto">
                   <article
                     className="bg-[#0b1320] border border-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 h-full flex flex-col group"
                   >
