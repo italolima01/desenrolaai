@@ -196,9 +196,9 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
                 setIndex(newIndex);
               }}
             >
-              <div className="flex-none w-[calc((100vw-380px)/2)]" aria-hidden="true" />
+              <div className="flex-none w-[calc((100vw-360px)/2)]" aria-hidden="true" />
               {cases.map((caseItem: CaseItem, idx: number) => (
-              <div key={idx} data-card className="snap-center flex-none w-[380px]">
+              <div key={idx} data-card className="snap-center flex-none w-[360px] px-3">
                   <article
                     className="bg-[#0b1320] border border-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 h-full flex flex-col group"
                   >
