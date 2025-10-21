@@ -154,8 +154,15 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
       setIndex(i);
       return;
     }
-    const w = containerRef.current.clientWidth;
-    containerRef.current.scrollTo({ left: i * w, behavior: 'smooth' });
+    const children = Array.from(containerRef.current.children) as HTMLElement[];
+    const child = children[i];
+    if (child) {
+      child.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    } else {
+      // fallback: scroll by container width
+      const w = containerRef.current.clientWidth;
+      containerRef.current.scrollTo({ left: i * w, behavior: 'smooth' });
+    }
     setIndex(i);
   }
 
