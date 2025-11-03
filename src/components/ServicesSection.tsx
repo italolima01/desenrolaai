@@ -30,7 +30,7 @@ export default function ServicesSection() {
   ];
 
   return (
-    <section id="services" className="relative bg-white py-20 pb-48 px-4">
+    <section id="services" className="relative bg-pattern-white py-20 pb-48 px-4">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">O que oferecemos</h2>
@@ -108,5 +108,3 @@ function FlipCard({ title, subtitle, description, Icon }: { title: string; subti
     </div>
   );
 }
-
-

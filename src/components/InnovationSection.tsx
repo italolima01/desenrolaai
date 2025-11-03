@@ -60,7 +60,7 @@ export default function InnovationSection() {
               </h2>
 
               <p className="text-gray-300 text-base sm:text-lg mb-6">
-                Na <span className="font-semibold text-[rgb(var(--color-primary))]">Desenrola AI</span>, somos movidos pela paixão por tecnologia e inovação. Nosso objetivo é simples: ajudar sua empresa a alcançar novos patamares através de soluções inteligentes em IA e software personalizado.
+                Aqui na <span className="font-semibold text-[rgb(var(--color-primary))]">Desenrola</span>, somos movidos pela paixão por tecnologia e inovação. Nosso objetivo é simples: ajudar sua empresa a alcançar novos patamares através de soluções inteligentes em IA e software personalizado.
               </p>
 
               <p className="text-gray-300 text-base sm:text-lg">

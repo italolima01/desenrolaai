@@ -27,7 +27,7 @@ export default function CtaSection() {
   };
 
   return (
-    <section id="cta" className="relative bg-white py-20 text-center pb-48">
+    <section id="cta" className="relative bg-pattern-white py-20 text-center pb-48">
       <div className="container mx-auto px-4">
         <motion.h2
           initial={{ opacity: 0, y: -50 }}
@@ -109,12 +109,12 @@ export default function CtaSection() {
         <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-full">
           <path 
             d="M0,60 C240,0 360,120 600,60 C840,0 960,120 1200,60 C1320,30 1440,90 1440,60 L1440,120 L0,120 Z" 
-            fill="#030712" 
+            fill="#ffffff" 
             fillOpacity="1" 
           />
           <path 
             d="M0,80 C200,40 400,120 600,80 C800,40 1000,120 1200,80 C1320,60 1440,100 1440,80 L1440,120 L0,120 Z" 
-            fill="#000000" 
+            fill="#ffffff" 
             fillOpacity="0.8" 
           />
         </svg>

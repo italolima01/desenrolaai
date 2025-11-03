@@ -14,6 +14,8 @@
 html, body {
   scroll-behavior: smooth !important;
   width: 100vw;
+  background-color:#fff;
+  background-image:linear-gradient(135deg, transparent 0%, #fff 25%, #fff 75%, transparent 100%), url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAIklEQVQoU2N89+7dfwYsQEhIiBEkzDgkFGDzAbIY2Cv4AACvrBgJjYNGfwAAAABJRU5ErkJggg==);
   overflow-x: hidden; /* Ensure no horizontal scroll on the root elements */
 }
 
@@ -29,8 +31,7 @@ div[style*="overflow: scroll"], div[style*="overflow: auto"] {
 }
 
 body {
-  color: #fff;
-  background-color: rgba(var(--color-accent), 0.5);
+  color: #fff; /* A cor do texto padrão ainda é branca, pode precisar de ajuste em alguns locais */
 }
 
 @layer components {
@@ -50,6 +51,11 @@ body {
     @apply backdrop-blur-md bg-opacity-20 border border-opacity-30;
     background-color: rgba(15, 23, 42, 0.35); /* slate-900 alpha */
     border-color: rgba(var(--color-primary), 0.4);
+  }
+
+  .bg-pattern-white {
+    background-color:#fff;
+    background-image:linear-gradient(135deg, transparent 0%, #fff 25%, #fff 75%, transparent 100%), url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAIklEQVQoU2N89+7dfwYsQEhIiBEkzDgkFGDzAbIY2Cv4AACvrBgJjYNGfwAAAABJRU5ErkJggg==);
   }
 }
 

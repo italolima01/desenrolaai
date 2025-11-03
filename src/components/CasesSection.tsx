@@ -74,7 +74,7 @@ const cardVariants: Variants = {
 
 export default function CasesSection() {
   return (
-    <section id="cases" className="bg-[#0f1724] py-24 px-4">
+    <section id="cases" className="bg-pattern-white py-24 px-4">
       <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: -12 }}
@@ -83,8 +83,8 @@ export default function CasesSection() {
           transition={{ duration: 0.45 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">Cases de Sucesso</h2>
-          <p className="text-slate-300 text-lg sm:text-xl">Soluções feitas sob medida que geram resultados reais.</p>
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">Cases de Sucesso</h2>
+          <p className="text-gray-600 text-lg sm:text-xl">Soluções feitas sob medida que geram resultados reais.</p>
         </motion.div>
 
         {/* Carousel */}
@@ -140,51 +140,44 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
   const maxIndex = Math.max(0, cases.length - visible);
 
   function prev() {
-    if (visible === 1) {
-      const pages = cases.length;
-      const nextIdx = (index - 1 + pages) % pages;
-      scrollToIndex(nextIdx);
-      return;
-    }
-
-    setIndex((i) => {
-      const pages = Math.max(1, maxIndex + 1);
-      return (i - 1 + pages) % pages;
-    });
+    const numPages = visible === 1 ? cases.length : maxIndex + 1;
+    const newIndex = (index - 1 + numPages) % numPages;
+    visible === 1 ? scrollToIndex(newIndex) : setIndex(newIndex);
   }
   function next() {
-    if (visible === 1) {
-      const pages = cases.length;
-      const nextIdx = (index + 1) % pages;
-      scrollToIndex(nextIdx);
-      return;
-    }
-
-    setIndex((i) => {
-      const pages = Math.max(1, maxIndex + 1);
-      return (i + 1) % pages;
-    });
+    const numPages = visible === 1 ? cases.length : maxIndex + 1;
+    const newIndex = (index + 1) % numPages;
+    visible === 1 ? scrollToIndex(newIndex) : setIndex(newIndex);
   }
 
   function scrollToIndex(i: number) {
+    const targetIndex = i;
+
     if (!containerRef.current) {
-      setIndex(i);
+      setIndex(targetIndex);
       return;
     }
+
     const children = Array.from(containerRef.current.children) as HTMLElement[];
-    const child = children[i];
+    const child = children[targetIndex];
     if (child) {
-      child.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      // Para o último item, alinhamos ao final para não rolar para um espaço vazio.
+      // Para os outros, centralizamos.
+      const isLastItem = targetIndex === cases.length - 1 && cases.length > visible;
+      child.scrollIntoView({
+        behavior: 'smooth',
+        inline: isLastItem ? 'end' : 'center',
+      });
     } else {
       // fallback: scroll by container width
       const w = containerRef.current.clientWidth;
-      containerRef.current.scrollTo({ left: i * w, behavior: 'smooth' });
+      containerRef.current.scrollTo({ left: targetIndex * w, behavior: 'smooth' });
     }
-    setIndex(i);
+    setIndex(targetIndex);
   }
 
   return (
-    <div className="relative px-0 lg:px-12 max-w-[100vw] overflow-hidden">
+    <div className="relative px-0 lg:px-12 max-w-[100vw] lg:overflow-visible overflow-hidden">
       <button
         aria-label="Anterior"
         onClick={prev}
@@ -215,18 +208,18 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
               }}
             >
               {cases.map((caseItem: CaseItem, idx: number) => (
-              <div key={idx} data-card className="snap-center flex-none px-1" style={{ width: `${cardWidth}px` }}>
-                  <article
-                    className="bg-[#0b1320] border border-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 h-full flex flex-col group"
-                  >
-                    <div className="relative h-72 w-full overflow-hidden">
-                      <Image src={caseItem.image} alt={caseItem.title} fill style={{ objectFit: 'cover' }} className="object-cover transition-transform duration-300 ease-out group-hover:scale-110" />
-                    </div>
+                <div key={idx} data-card className="snap-center flex-none px-1" style={{ width: `${cardWidth}px` }}>
+                    <article
+                      className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 h-full flex flex-col group"
+                    >
+                      <div className="relative h-72 w-full overflow-hidden">
+                        <Image src={caseItem.image} alt={caseItem.title} fill style={{ objectFit: 'cover' }} className="object-cover transform transition-transform duration-500 ease-out group-hover:scale-105 lg:group-hover:scale-110 will-change-transform" />
+                      </div>
 
-                    <div className="p-8 bg-gradient-to-t from-[#07121a] to-transparent flex-1 flex flex-col">
-                      <span className="text-xs text-sky-300 font-medium mb-2 block">{caseItem.category}</span>
-                      <h3 className="text-white text-lg sm:text-xl font-semibold mb-3">{caseItem.title}</h3>
-                      <p className="text-slate-300 text-sm mb-6 line-clamp-4 flex-1">{caseItem.description}</p>
+                    <div className="p-8 flex-1 flex flex-col">
+                      <span className="text-xs text-blue-600 font-semibold mb-2 block">{caseItem.category}</span>
+                      <h3 className="text-gray-900 text-lg sm:text-xl font-semibold mb-3">{caseItem.title}</h3>
+                      <p className="text-gray-600 text-sm mb-6 line-clamp-4 flex-1">{caseItem.description}</p>
 
                       <div className="flex flex-wrap gap-2 mt-auto">
                         {caseItem.tags.map((tag: string) => (
@@ -255,20 +248,20 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.4 }}
                     variants={cardVariants}
-                    className="bg-[#0b1320] border border-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-200 h-full flex flex-col"
+                    className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-200 h-full flex flex-col group"
                   >
                     <div className="relative h-72 w-full">
-                      <Image src={caseItem.image} alt={caseItem.title} fill style={{ objectFit: 'cover' }} className="object-cover" />
+                      <Image src={caseItem.image} alt={caseItem.title} fill style={{ objectFit: 'cover' }} className="object-cover transform transition-transform duration-500 ease-out group-hover:scale-105 lg:group-hover:scale-110 will-change-transform" />
                     </div>
 
-                    <div className="p-8 bg-gradient-to-t from-[#07121a] to-transparent flex-1 flex flex-col">
-                      <span className="text-xs text-sky-300 font-medium mb-2 block">{caseItem.category}</span>
-                      <h3 className="text-white text-lg sm:text-xl font-semibold mb-3">{caseItem.title}</h3>
-                      <p className="text-slate-300 text-sm mb-6 line-clamp-4 flex-1">{caseItem.description}</p>
+                    <div className="p-8 flex-1 flex flex-col">
+                      <span className="text-xs text-blue-600 font-semibold mb-2 block">{caseItem.category}</span>
+                      <h3 className="text-gray-900 text-lg sm:text-xl font-semibold mb-3">{caseItem.title}</h3>
+                      <p className="text-gray-600 text-sm mb-6 line-clamp-4 flex-1">{caseItem.description}</p>
 
                       <div className="flex flex-wrap gap-2 mt-auto">
                         {caseItem.tags.map((tag: string) => (
-                          <span key={tag} className="text-xs text-sky-200 bg-sky-900/10 border border-sky-800/30 px-3 py-1 rounded-full">
+                          <span key={tag} className="text-xs text-blue-700 bg-blue-100/50 border border-blue-200/30 px-3 py-1 rounded-full">
                             {tag}
                           </span>
                         ))}
@@ -284,11 +277,12 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
         {/* Dots */}
         <div className="flex justify-center gap-2 mt-6">
           {visible === 1
-            ? cases.map((_, i) => (
+            // Para mobile, mostramos um ponto para cada card, mas a rolagem é limitada
+            ? Array.from({ length: Math.max(1, cases.length) }).map((_, i) => (
                 <button
                   key={i}
                   onClick={() => scrollToIndex(i)}
-                  className={`h-2 w-8 rounded-full transition-colors ${i === index ? 'bg-sky-400' : 'bg-slate-700'}`}
+                  className={`h-2 w-8 rounded-full transition-colors ${i === index ? 'bg-blue-500' : 'bg-gray-300'}`}
                   aria-label={`Ir para card ${i + 1}`}
                 />
               ))
@@ -296,7 +290,7 @@ function Carousel({ cases, cardVariants }: { cases: CaseItem[]; cardVariants: Va
                 <button
                   key={i}
                   onClick={() => setIndex(i)}
-                  className={`h-2 w-8 rounded-full transition-colors ${i === index ? 'bg-sky-400' : 'bg-slate-700'}`}
+                  className={`h-2 w-8 rounded-full transition-colors ${i === index ? 'bg-blue-500' : 'bg-gray-300'}`}
                   aria-label={`Ir para página ${i + 1}`}
                 />
               ))}

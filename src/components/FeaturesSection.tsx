@@ -48,7 +48,7 @@ export default function FeaturesSection() {
 
       <div className="container mx-auto relative">
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white">Por que escolher a <span className="text-[rgb(var(--color-primary))]">Desenrola AI</span>?</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white">Por que escolher a <span className="text-[rgb(var(--color-primary))]">Desenrola</span>?</h2>
           <p className="text-gray-300 mt-4 text-base sm:text-lg">Nossos diferenciais que garantem o seu sucesso.</p>
         </div>
 
